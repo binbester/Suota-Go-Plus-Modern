@@ -10,6 +10,7 @@ For the full project including firmware and documentation, please visit the orig
 - **Original Repository**: https://github.com/Jesus805/Suota-Go-Plus
 - **Reference Article**: https://tinyhack.com/2018/11/21/reverse-engineering-pokemon-go-plus/
 
+Thank you Dupe for the Galaxy 8+!
 ## What This App Does
 
 This Android application performs SUOTA (Software Update Over The Air) on Pokemon GO Plus devices using Dialog Semiconductor's DA14580 chip. It allows you to:
