@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:local="clr-namespace:suota_pgp"
+             x:Class="suota_pgp.ConnectView"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             Title="Patch Device">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:AppStateToBoolConverter x:Key="ss2b"/>
+            <local:ErrorStateToGridLengthConverter x:Key="s2gl"/>
+            <local:ErrorStateToStringConverter x:Key="es2s"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{Binding ErrorState,
+                                        Converter={StaticResource s2gl}}"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="errorLabel"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Text="{Binding ErrorState,
+                         Converter={StaticResource es2s}}"
+                   Margin="10"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Text="Paired Pokemon GO Plus"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="10"
+                   FontSize="Medium"/>
+            
+            <Button Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Text="Refresh"
+                    Command="{Binding GetPairedPgpCommand}"
+                    HorizontalOptions="Center"/>
+            <ListView Grid.Row="3"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      ItemsSource="{Binding Devices}"
+                      SelectedItem="{Binding SelectedDevice}"
+                      SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal"
+                                         Margin="10">
+                                <Label Text="{Binding Name}"/>
+                                <Label Text=" - "/>
+                                <Label Text="{Binding BtAddress}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Grid.Row="4"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Text="Firmware File"
+                   HorizontalOptions="Center"
+                   Margin="10"
+                   FontSize="Medium"/>
+            
+            <Button Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Text="Refresh"
+                    Command="{Binding RefreshFilesCommand}"
+                    HorizontalOptions="Center"/>
+            <ListView Grid.Row="6"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      ItemsSource="{Binding FileNames}"
+                      SelectedItem="{Binding SelectedFileName}"
+                      SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Margin="10" Text="{Binding Name}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Grid.Row="7"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Text="Start Patch"
+                    Command="{Binding BeginSuotaCommand}"
+                    HorizontalOptions="Center"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

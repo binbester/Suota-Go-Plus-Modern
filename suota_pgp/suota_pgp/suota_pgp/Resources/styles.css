@@ -1,0 +1,15 @@
+
+^label {
+    color: black;
+    font-size: small;
+}
+
+#listViewLabel {
+    color: black;
+    font-size: small;
+}
+
+#errorLabel {
+    color: red;
+    font-size: medium;
+}
