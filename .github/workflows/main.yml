@@ -5,17 +5,17 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022 # <--- Hier nutzen wir den 2022er Server für volle Xamarin-Kompatibilität
     
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4 # <--- Hier auf v4 aktualisiert
+      uses: actions/checkout@v4
 
     - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2 # <--- Direkt auf die neuste Version aktualisiert
+      uses: microsoft/setup-msbuild@v2
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v2.0.0 # <--- Ebenfalls auf eine aktuelle Version gehoben
+      uses: NuGet/setup-nuget@v2.0.0
 
     - name: Pakete wiederherstellen (Restore)
       run: nuget restore suota_pgp.sln
@@ -24,7 +24,7 @@ jobs:
       run: msbuild suota_pgp.sln /p:Configuration=Release /t:SignAndroidPackage
 
     - name: APK als Download bereitstellen
-      uses: actions/upload-artifact@v4 # <--- Hier der entscheidende Fix auf v4!
+      uses: actions/upload-artifact@v4
       with:
         name: Suota-App-APK
         path: '**/*.apk'
