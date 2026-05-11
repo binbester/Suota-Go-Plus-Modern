@@ -1,0 +1,30 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch: # Erlaubt uns, den Bau manuell per Knopfdruck zu starten
+
+jobs:
+  build:
+    runs-on: windows-latest # Wir nutzen einen kostenlosen Windows-Server von GitHub
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.2.0
+
+    - name: Pakete wiederherstellen (Restore)
+      run: nuget restore suota_pgp.sln
+
+    - name: App kompilieren (Build)
+      run: msbuild suota_pgp.sln /p:Configuration=Release /t:SignAndroidPackage
+
+    - name: APK als Download bereitstellen
+      uses: actions/upload-artifact@v3
+      with:
+        name: Suota-App-APK
+        path: '**/*.apk' # Sucht nach allen gebauten APK-Dateien
