@@ -1,21 +1,21 @@
 name: Build Android APK
 
 on:
-  workflow_dispatch: # Erlaubt uns, den Bau manuell per Knopfdruck zu starten
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-latest # Wir nutzen einen kostenlosen Windows-Server von GitHub
+    runs-on: windows-latest
     
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4 # <--- Hier auf v4 aktualisiert
 
     - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2 # <--- Direkt auf die neuste Version aktualisiert
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.2.0
+      uses: NuGet/setup-nuget@v2.0.0 # <--- Ebenfalls auf eine aktuelle Version gehoben
 
     - name: Pakete wiederherstellen (Restore)
       run: nuget restore suota_pgp.sln
@@ -24,7 +24,7 @@ jobs:
       run: msbuild suota_pgp.sln /p:Configuration=Release /t:SignAndroidPackage
 
     - name: APK als Download bereitstellen
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4 # <--- Hier der entscheidende Fix auf v4!
       with:
         name: Suota-App-APK
-        path: '**/*.apk' # Sucht nach allen gebauten APK-Dateien
+        path: '**/*.apk'
