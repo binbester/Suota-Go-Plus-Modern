@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022 # <--- Hier nutzen wir den 2022er Server für volle Xamarin-Kompatibilität
+    runs-on: windows-2022
     
     steps:
     - name: Checkout Code
@@ -18,10 +18,10 @@ jobs:
       uses: NuGet/setup-nuget@v2.0.0
 
     - name: Pakete wiederherstellen (Restore)
-      run: nuget restore suota_pgp.sln
+      run: nuget restore suota_pgp/suota_pgp.sln # <--- Hier ist der Pfad korrigiert
 
     - name: App kompilieren (Build)
-      run: msbuild suota_pgp.sln /p:Configuration=Release /t:SignAndroidPackage
+      run: msbuild suota_pgp/suota_pgp.sln /p:Configuration=Release /t:SignAndroidPackage # <--- Und hier auch
 
     - name: APK als Download bereitstellen
       uses: actions/upload-artifact@v4
