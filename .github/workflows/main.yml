@@ -11,6 +11,12 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    - name: Java 11 einrichten # <--- NEU: Zwingend für Android 13 benötigt
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'microsoft'
+        java-version: '11'
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
@@ -18,13 +24,13 @@ jobs:
       uses: NuGet/setup-nuget@v2.0.0
 
     - name: Pakete wiederherstellen (Restore)
-      run: nuget restore suota_pgp/suota_pgp.sln # <--- Hier ist der Pfad korrigiert
+      run: nuget restore suota_pgp/suota_pgp.sln
 
-    - name: App kompilieren (Build)
-      run: msbuild suota_pgp/suota_pgp.sln /p:Configuration=Release /t:SignAndroidPackage # <--- Und hier auch
+    - name: App kompilieren (Nur das Android-Projekt) # <--- NEU: Gezielter Pfad
+      run: msbuild suota_pgp/suota_pgp/suota_pgp.Android/suota_pgp.Android.csproj /p:Configuration=Release /t:SignAndroidPackage
 
     - name: APK als Download bereitstellen
       uses: actions/upload-artifact@v4
       with:
         name: Suota-App-APK
-        path: '**/*.apk'
+        path: '**/*-Signed.apk' # <--- Zieht direkt die fertig signierte App
